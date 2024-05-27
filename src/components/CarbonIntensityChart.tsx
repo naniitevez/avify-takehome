@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import {
   ChartData,
-  ChartOptions,
   Chart,
   LinearScale,
   CategoryScale,
   BarElement,
 } from "chart.js";
+import options from "../ChartOptions";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import fetchData from "../fetchData";
 import { Generationmix } from "../types";
 import Loading from "./loader/Loading";
-Chart.register(LinearScale, CategoryScale, BarElement);
+Chart.register(LinearScale, CategoryScale, BarElement, ChartDataLabels);
 
 const CarbonIntensityChart: React.FC = () => {
   const [generationData, setGenerationData] = useState<Generationmix[]>([]);
@@ -29,25 +30,13 @@ const CarbonIntensityChart: React.FC = () => {
         label: "Percentage of Energy Generation",
         data: generationData ? generationData.map((d) => d.perc) : [],
         backgroundColor: "rgba(75, 192, 192, 0.5)",
+        hoverBackgroundColor: "rgba(75, 192, 192, 0.8)",
+        hoverBorderColor: "rgba(75, 192, 192, 1)",
         borderColor: "rgba(75, 192, 192, 1)",
+        hoverBorderWidth: 2,
         borderWidth: 1,
       },
     ],
-  };
-
-  const options: ChartOptions<"bar"> = {
-    indexAxis: "y",
-    scales: {
-      x: {
-        beginAtZero: true,
-      },
-    },
-    plugins: {
-      legend: {
-        display: true,
-        position: "top",
-      },
-    },
   };
 
   return (
