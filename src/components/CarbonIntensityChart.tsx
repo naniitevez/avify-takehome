@@ -12,15 +12,17 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 import fetchData from "../fetchData";
 import { Generationmix } from "../types";
 import Loading from "./loader/Loading";
+import ErrorComponent from "./ErrorComponent";
 Chart.register(LinearScale, CategoryScale, BarElement, ChartDataLabels);
 
 const CarbonIntensityChart: React.FC = () => {
   const [generationData, setGenerationData] = useState<Generationmix[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData()
       .then((data) => setGenerationData(data))
-      .catch(console.error);
+      .catch((error) => setError("Failed to fetch data:" + error));
   }, []);
 
   const data: ChartData<"bar"> = {
@@ -43,10 +45,16 @@ const CarbonIntensityChart: React.FC = () => {
     <>
       <h1>UK Energy Generation Mix</h1>
       <section className="chart_container">
-        {generationData?.length > 0 ? (
-          <Bar data={data} options={options} />
+        {error ? (
+          <ErrorComponent errorMessage={error} />
         ) : (
-          <Loading />
+          <>
+            {generationData?.length > 0 ? (
+              <Bar data={data} options={options} />
+            ) : (
+              <Loading />
+            )}
+          </>
         )}
       </section>
     </>
