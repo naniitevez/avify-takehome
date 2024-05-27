@@ -1,7 +1,11 @@
-import React from 'react';
+import React from "react";
+import "./globals.css";
+import CarbonIntensityChart from "./components/CarbonIntensityChart";
 
-const App = () => <h1>UK Energy Mix</h1>;
+const App = () => (
+  <div className="App">
+    <CarbonIntensityChart />
+  </div>
+);
 
-export {
-    App
-}
+export { App };
